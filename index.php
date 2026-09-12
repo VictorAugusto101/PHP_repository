@@ -6,13 +6,19 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Login de Usuario</h1>
+    <header>
 
-    <form method="post" action="login.php">
-        CPF : <input type="text" name="cpf"><br>
-        SENHA : <input type="password" name="senha"><br>
+    </header>
+        <h1>Login de Usuario</h1>
 
-        <input type="submit" value="login">
-    </form>
+        <form method="post" action="login.php">
+            CPF : <input type="text" name="cpf"><br>
+            SENHA : <input type="password" name="senha"><br>
+
+            <input type="submit" value="login">
+        </form>
+        <br><br>
+        <h3><a href="cadastroUsuario.php">Cadastrar-se</a></h3>
+    
 </body>
 </html>
