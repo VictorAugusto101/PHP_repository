@@ -3,22 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="desingLogin.css">
     <title>Document</title>
 </head>
 <body>
     <header>
-
+        <h2>Cadastro</h2>
     </header>
-        <h1>Login de Usuario</h1>
+        <div class="container">
+            <div id="logo">
+                <h1>Login de Usuario</h1>
+            </div>
+            
+            <div id="formulario">
+                <form method="post" action="login.php">
+                    <label for="cpf">CPF</label>
+                    <input id="cpf" type="text" name="cpf">
+                    <label for="senha">SENHA</label>
+                    <input id="senha" type="password" name="senha">
 
-        <form method="post" action="login.php">
-            CPF : <input type="text" name="cpf"><br>
-            SENHA : <input type="password" name="senha"><br>
+                    <input type="submit" value="login">
+                </form>
+                <h3><a href="cadastroUsuario.php">Cadastrar-se</a></h3>
+            </div> 
 
-            <input type="submit" value="login">
-        </form>
-        <br><br>
-        <h3><a href="cadastroUsuario.php">Cadastrar-se</a></h3>
-    
+        </div>
 </body>
 </html>
