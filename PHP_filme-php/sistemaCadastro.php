@@ -5,17 +5,18 @@ $cpf = trim($_POST['cpf'] ?? '');
 $senha = trim($_POST['senha'] ?? '');
 $nome = trim($_POST['nome'] ?? '');
 
-if ($cpf === '') {
+if ($cpf == '') {
     die('Digite o CPF.');
 }
 
-if ($senha === '') {
+if ($senha == '') {
     die('Digite a senha.');
 }
 
-if ($nome === '') {
+if ($nome == '') {
     die('Digite o nome.');
 }
+
 
 $sql = "INSERT INTO usuarios (nome, cpf, senha) VALUES (?, ?, ?)";
 $stmt = $conn->prepare($sql);
