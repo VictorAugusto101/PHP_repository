@@ -51,6 +51,7 @@ if (!$result) {
     <div>
         <span>Olá, <?= htmlspecialchars($_SESSION['nome']) ?></span>
         <a href="sair.php">SAIR</a>
+        <a href="cadastroFilmes.php">Filmes</a>
     </div>
 </header>
 
