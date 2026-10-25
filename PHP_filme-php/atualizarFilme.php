@@ -8,21 +8,31 @@ if (!isset($_SESSION['cpf'])) {
 
 include("conexao.php");
 
-$cpf = $_GET['cpf'] ?? '';
+$id = filter_var($_GET['filme'] ?? '', FILTER_VALIDATE_INT);
 
-if ($cpf === '') {
-    header('Location: principal.php');
-    exit;
+if ($id === false) {
+    die("Filme não informado.");
 }
 
-$stmt = $conn->prepare("SELECT nome, cpf, senha FROM usuarios WHERE cpf = ?");
-$stmt->bind_param("s", $cpf);
+$stmt = $conn->prepare("SELECT filme, nome, ano, genero FROM filmes WHERE filme = ?");
+
+if (!$stmt) {
+    die("Falha ao preparar o SQL: " . $conn->error);
+}
+
+$stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
-$usuario = $result->fetch_assoc();
+$filme = $result->fetch_assoc();
 
-if (!$usuario) {
-    die("Usuário não encontrado.");
+if (!$filme) {
+    die("Filme não encontrado.");
+}
+
+$generos = $conn->query("SELECT genero, descricao FROM generos WHERE status = 1 ORDER BY descricao");
+
+if (!$generos) {
+    die("Erro ao consultar gêneros: " . $conn->error);
 }
 ?>
 <!DOCTYPE html>
@@ -30,29 +40,41 @@ if (!$usuario) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atualizar usuário</title>
+    <title>Atualizar filme</title>
     <link rel="stylesheet" href="desingLogin.css">
 </head>
 <body>
 <header>
-    <h2>Atualizar usuário</h2>
+    <h2>Atualizar filme</h2>
 </header>
 <div class="container">
     <div id="logo">
-        <h1>Atualizar usuário</h1>
+        <h1>Atualizar filme</h1>
     </div>
     <div id="formulario">
-        <form method="post" action="inserirUsuario.php">
-            <input type="hidden" name="cpfAnterior" value="<?= htmlspecialchars($usuario['cpf']) ?>">
+        <form method="post" action="salvarFilme.php">
+            <input type="hidden" name="filme" value="<?= (int)$filme['filme'] ?>">
+
             <label for="nome">NOME</label>
-            <input id="nome" type="text" name="nome" value="<?= htmlspecialchars($usuario['nome']) ?>" required>
-            <label for="cpf">CPF</label>
-            <input id="cpf" type="text" name="cpf" value="<?= htmlspecialchars($usuario['cpf']) ?>" required>
-            <label for="senha">SENHA</label>
-            <input id="senha" type="password" name="senha" value="<?= htmlspecialchars($usuario['senha']) ?>" required>
+            <input id="nome" type="text" name="nome" value="<?= htmlspecialchars($filme['nome']) ?>" required>
+
+            <label for="ano">ANO</label>
+            <input id="ano" type="number" name="ano" value="<?= (int)$filme['ano'] ?>" required>
+
+            <label for="genero">Gênero do filme:</label>
+            <select name="genero" id="genero" required>
+                <option value="" disabled>Selecione...</option>
+                <?php while ($g = $generos->fetch_assoc()): ?>
+                    <option value="<?= (int)$g['genero'] ?>"
+                        <?= (int)$filme['genero'] === (int)$g['genero'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($g['descricao']) ?>
+                    </option>
+                <?php endwhile; ?>
+            </select>
+
             <input type="submit" value="UPDATE">
         </form>
-        <h3><a href="principal.php">Voltar</a></h3>
+        <h3><a href="cadastroFilmes.php">Voltar</a></h3>
     </div>
 </div>
 </body>
